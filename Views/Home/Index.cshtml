@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Vipisky";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Загрузить файл Excel</h2>
+    <form method="post" enctype="multipart/form-data" class="row">
+        <div class="col-md-6 mb-3">
+            <label for="file" class="form-label">Файл Excel:</label>
+            <input type="file" class="form-control" id="file" name="file" accept=".xls, .xlsx" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="инд_Дата_проводки" class="form-label">Дата проводки:</label>
+            <input type="number" class="form-control" id="инд_Дата_проводки" name="инд_Дата_проводки" value="@Model.инд_Дата_проводки" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="инд_Счет_Дебет" class="form-label">Счет Дебет:</label>
+            <input type="number" class="form-control" id="инд_Счет_Дебет" name="инд_Счет_Дебет" value="@Model.инд_Счет_Дебет" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="инд_Сумма_Кредит" class="form-label">Сумма Кредит:</label>
+            <input type="number" class="form-control" id="инд_Сумма_Кредит" name="инд_Сумма_Кредит" value="@Model.инд_Сумма_Кредит" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="инд_Номер_документа" class="form-label">Номер документа:</label>
+            <input type="number" class="form-control" id="инд_Номер_документа" name="инд_Номер_документа" value="@Model.инд_Номер_документа" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="инд_Назначение_платежа" class="form-label">Назначение платежа:</label>
+            <input type="number" class="form-control" id="инд_Назначение_платежа" name="инд_Назначение_платежа" value="@Model.инд_Назначение_платежа" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Загрузить</button>
+        </div>
+    </form>
+</div>
