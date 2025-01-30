@@ -18,28 +18,28 @@ public class HomeController : Controller
     private readonly IWebHostEnvironment _webHostEnvironment;
     public IActionResult Index()
     {
-        // Инициализация настроек по умолчанию
-        Настройки настройки = new Настройки();
+        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅР°СЃС‚СЂРѕРµРє РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+        РќР°СЃС‚СЂРѕР№РєРё РЅР°СЃС‚СЂРѕР№РєРё = new РќР°СЃС‚СЂРѕР№РєРё();
 
-        // Передача настроек в представление
-        ViewData["Настройки"] = настройки;
+        // РџРµСЂРµРґР°С‡Р° РЅР°СЃС‚СЂРѕРµРє РІ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
+        ViewData["РќР°СЃС‚СЂРѕР№РєРё"] = РЅР°СЃС‚СЂРѕР№РєРё;
 
-        return View(настройки);
+        return View(РЅР°СЃС‚СЂРѕР№РєРё);
     }
     [HttpPost]
-    public async Task<IActionResult> Index(IFormFile file, Настройки настройки)
+    public async Task<IActionResult> Index(IFormFile file, РќР°СЃС‚СЂРѕР№РєРё РЅР°СЃС‚СЂРѕР№РєРё)
     {
         try
         {
             if (file == null || file.Length == 0)
             {
-                return BadRequest("Файл не был загружен.");
+                return BadRequest("Р¤Р°Р№Р» РЅРµ Р±С‹Р» Р·Р°РіСЂСѓР¶РµРЅ.");
             }
 
-            // Проверка типа файла
+            // РџСЂРѕРІРµСЂРєР° С‚РёРїР° С„Р°Р№Р»Р°
             if (!file.ContentType.Equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", StringComparison.OrdinalIgnoreCase))
             {
-                return BadRequest("Неверный тип файла. Допустим только Excel (.xlsx).");
+                return BadRequest("РќРµРІРµСЂРЅС‹Р№ С‚РёРї С„Р°Р№Р»Р°. Р”РѕРїСѓСЃС‚РёРј С‚РѕР»СЊРєРѕ Excel (.xlsx).");
             }
 
             string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Files");
@@ -48,7 +48,7 @@ public class HomeController : Controller
                 Directory.CreateDirectory(uploadsFolder);
             }
             string fileName = Path.GetFileName(file.FileName);
-            string fileSavePath = Path.Combine(uploadsFolder, "Обработываемый_файл.xlsx");
+            string fileSavePath = Path.Combine(uploadsFolder, "РћР±СЂР°Р±РѕС‚С‹РІР°РµРјС‹Р№_С„Р°Р№Р».xlsx");
 
             using (FileStream stream = new FileStream(fileSavePath, FileMode.Create))
             {
@@ -56,32 +56,32 @@ public class HomeController : Controller
             }
 
 
-            // Обработка файла
+            // РћР±СЂР°Р±РѕС‚РєР° С„Р°Р№Р»Р°
             Excel excel = new Excel();
             DataTable dataTable = excel.ReadExcelFile(@fileSavePath);
 
 
 
-            Анализ_выписки анализ_Выписки = new Анализ_выписки();
-            DataTable dtResult = анализ_Выписки.Сделать_анализ(dataTable, настройки);
+            РђРЅР°Р»РёР·_РІС‹РїРёСЃРєРё Р°РЅР°Р»РёР·_Р’С‹РїРёСЃРєРё = new РђРЅР°Р»РёР·_РІС‹РїРёСЃРєРё();
+            DataTable dtResult = Р°РЅР°Р»РёР·_Р’С‹РїРёСЃРєРё.РЎРґРµР»Р°С‚СЊ_Р°РЅР°Р»РёР·(dataTable, РЅР°СЃС‚СЂРѕР№РєРё);
             string processedFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "processed");
             if (!Directory.Exists(processedFilePath))
             {
                 Directory.CreateDirectory(processedFilePath);
             }
-            // Сохранение обработанных данных в новый файл
-            processedFilePath = Path.Combine(processedFilePath, "Обработанный_файл.xlsx");
+            // РЎРѕС…СЂР°РЅРµРЅРёРµ РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… РґР°РЅРЅС‹С… РІ РЅРѕРІС‹Р№ С„Р°Р№Р»
+            processedFilePath = Path.Combine(processedFilePath, "РћР±СЂР°Р±РѕС‚Р°РЅРЅС‹Р№_С„Р°Р№Р».xlsx");
             excel.SaveExel(dtResult, processedFilePath);
 
-            // Возвращение файла пользователю
-            return File(System.IO.File.ReadAllBytes(processedFilePath), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Обработанный_файл.xlsx");
+            // Р’РѕР·РІСЂР°С‰РµРЅРёРµ С„Р°Р№Р»Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ
+            return File(System.IO.File.ReadAllBytes(processedFilePath), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "РћР±СЂР°Р±РѕС‚Р°РЅРЅС‹Р№_С„Р°Р№Р».xlsx");
 
 
 
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message, "Ошибка при обработке файла Excel");
-            return BadRequest("Произошла ошибка при обработке файла. Попробуйте снова.");
+            Console.WriteLine(ex.Message, "РћС€РёР±РєР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ С„Р°Р№Р»Р° Excel");
+            return BadRequest("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ С„Р°Р№Р»Р°. РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.");
         }}
     }
