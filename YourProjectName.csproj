@@ -10,4 +10,8 @@
     <PackageReference Include="EPPlus" Version="7.5.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
+
 </Project>
